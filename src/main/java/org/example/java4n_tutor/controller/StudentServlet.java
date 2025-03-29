@@ -12,7 +12,11 @@ import java.util.List;
 @WebServlet(name = "StudentServlet", value = {
         "/students",
         "/students/new",
-        "/students/insert"
+        "/students/insert",
+        "/students/delete",
+        "/students/edit",
+        "/students/update"
+
 })
 public class StudentServlet extends HttpServlet {
 
@@ -36,7 +40,58 @@ public class StudentServlet extends HttpServlet {
             case "/students/insert":
                 insertStudent(request, response);
                 break;
+            case "/students/delete":
+                deleteStudent(request, response);
+                break;
+            case "/students/edit":
+                editStudent(request, response);
+                break;
+            case "/students/update":
+                updateStudent(request, response);
+                break;
         }
+    }
+
+    private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        // read from form
+        //Student student = getStudentFromForm(request);
+        Long id = Long.parseLong(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+
+        Student student = new Student(id, name, email, phone);
+
+
+        // update
+        studentService.updateStudent(student);
+
+        // redirect
+        response.sendRedirect(("/students"));
+
+
+    }
+
+    private void editStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        Long id = Long.parseLong(request.getParameter("id"));
+
+        Student student = studentService.getStudentById(id);
+
+        request.setAttribute("student", student);
+
+        request.getRequestDispatcher("/view/updateStudentForm.jsp")
+                .forward(request, response);
+    }
+
+    private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        long id = Long.parseLong(request.getParameter("id"));
+
+        studentService.deleteStudent(id);
+
+        response.sendRedirect("/students");
     }
 
     private void insertStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -53,7 +108,7 @@ public class StudentServlet extends HttpServlet {
 
     private Student getStudentFromForm(HttpServletRequest request) {
 
-        //Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");

@@ -22,6 +22,13 @@ public class Student {
         this.phone = phone;
     }
 
+    public Student(Long id, String name, String email, String phone) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public Long getId() {
         return id;
     }
