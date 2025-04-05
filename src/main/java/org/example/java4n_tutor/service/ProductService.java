@@ -13,4 +13,24 @@ public class ProductService {
 
         return productRepository.getProducts();
     }
+
+    public void addProduct(Product product) {
+
+        productRepository.addProduct(product);
+    }
+
+    public Product getProductById(Long id) {
+
+        return productRepository.getProductById(id);
+    }
+
+    public void updateProduct(Product product) {
+
+        productRepository.updateProduct(product);
+    }
+
+    public void deleteProduct(Long id) {
+
+        productRepository.deleteProduct(id);
+    }
 }
